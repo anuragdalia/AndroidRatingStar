@@ -15,11 +15,11 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-import static android.graphics.Canvas.CLIP_SAVE_FLAG;
+import static android.graphics.Canvas.ALL_SAVE_FLAG;
 
 /**
  * RatingStar is specific RatingBar use star drawable as the progress mark.
- *
+ * <p>
  * NOTE:
  * Padding will be larger if is {@link #cornerRadius} is set (No exact calc to handle this issue).
  */
@@ -30,7 +30,9 @@ public class RatingStarView extends View implements View.OnClickListener {
     private int starForegroundColor = 0xffED4A4B;
     private int strokeColor = 0xffED4A4B;
     private int starBackgroundColor = Color.WHITE;
-    /** used to make round smooth star horn */
+    /**
+     * used to make round smooth star horn
+     */
     private CornerPathEffect pathEffect;
     private ArrayList<StarModel> starList;
     private float rating;
@@ -42,9 +44,13 @@ public class RatingStarView extends View implements View.OnClickListener {
      * real drawn star number.
      */
     private int starCount;
-    /** calculated value */
+    /**
+     * calculated value
+     */
     private float starWidth;
-    /** calculated value */
+    /**
+     * calculated value
+     */
     private float starHeight;
     private float starMargin = 8;
     private float strokeWidth = 2f;
@@ -133,6 +139,7 @@ public class RatingStarView extends View implements View.OnClickListener {
 
     /**
      * Finally progress is: progress = rating / starNum
+     *
      * @param rating should be [0, starNum]
      */
     public void setRating(float rating) {
@@ -144,6 +151,7 @@ public class RatingStarView extends View implements View.OnClickListener {
 
     /**
      * Set the smooth of the star's horn.
+     *
      * @param cornerRadius corner circle radius
      */
     public void setCornerRadius(float cornerRadius) {
@@ -154,6 +162,7 @@ public class RatingStarView extends View implements View.OnClickListener {
     /**
      * The horizontal margin between two stars. The {@link #setCornerRadius} would make extra space
      * as it make the star smaller.
+     *
      * @param margin horizontal space
      */
     public void setStarMargin(int margin) {
@@ -166,6 +175,7 @@ public class RatingStarView extends View implements View.OnClickListener {
      * How many stars to show, one star means one score = 1f. See {@link #setRating(float)}<br />
      * NOTE: The star's height is made by contentHeight by default.So, be sure to has defined the
      * correct StarView's height.
+     *
      * @param count star count.
      */
     public void setStarNum(int count) {
@@ -223,7 +233,7 @@ public class RatingStarView extends View implements View.OnClickListener {
 
         this.starHeight = starHeight;
         this.starWidth = startWidth;
-        Log.d(TAG, "drawing starCount = " + starCount  + ", contentWidth = " + contentWidth
+        Log.d(TAG, "drawing starCount = " + starCount + ", contentWidth = " + contentWidth
                 + ", startWidth = " + startWidth + ", starHeight = " + starHeight);
 
         starList = new ArrayList<>(starCount);
@@ -280,8 +290,8 @@ public class RatingStarView extends View implements View.OnClickListener {
         }
 
         Log.d(TAG, "[onMeasure] width = " + width + ", pLeft = " + getPaddingLeft()
-            + ", pRight = " + getPaddingRight() + ", starMargin = " + starMargin
-            + ", starHeight = " + starHeight + ", starWidth = " + StarModel.getStarWidth(starHeight));
+                + ", pRight = " + getPaddingRight() + ", starMargin = " + starMargin
+                + ", starHeight = " + starHeight + ", starWidth = " + StarModel.getStarWidth(starHeight));
 
         int widthInt = (int) (width);
         if (widthInt < width) {
@@ -360,7 +370,7 @@ public class RatingStarView extends View implements View.OnClickListener {
 
         // layer 2
         RectF r = star.getOuterRect();
-        canvas.saveLayerAlpha(r.left, r.top, r.right, r.bottom, 0xff, CLIP_SAVE_FLAG);
+        canvas.saveLayerAlpha(r.left, r.top, r.right, r.bottom, 0xff, ALL_SAVE_FLAG);
         RectF clip = new RectF(star.getOuterRect());
         clip.right = dividerX;
         canvas.clipRect(clip);

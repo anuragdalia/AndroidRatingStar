@@ -7,19 +7,19 @@ import android.graphics.RectF;
  * used by {@link RatingStarView}, Most calculations (about x,y、size etc.) is done here.
  *
  * <h1>[Based Idea or Concept] </h1>
- *
+ * <p>
  * ## Standard Coordinate:<br />
- *  The coordinate is —— toward right for x+ ,toward up for y+ .
+ * The coordinate is —— toward right for x+ ,toward up for y+ .
  * <br /><br />
  * ## 5 outer vertexes<br />
  * The outer circle's (means "circumcircle") radius is 1f, original point O is the star's center,
  * so, the 5 vertexes at 5 outer corner is (from top A, at clockwise order):
  *
- *  <li>A（0,1）</li>
- *  <li>B(cos18°,sin18°)</li>
- *  <li>C(cos54°,-sin54°)</li>
- *  <li>D(-cos54°,-sin54°)</li>
- *  <li>E(-cos18°,sin18°)</li>
+ * <li>A（0,1）</li>
+ * <li>B(cos18°,sin18°)</li>
+ * <li>C(cos54°,-sin54°)</li>
+ * <li>D(-cos54°,-sin54°)</li>
+ * <li>E(-cos18°,sin18°)</li>
  * </p>
  * Created by hxw on 2017-04-23.
  */
@@ -31,7 +31,7 @@ class StarModel {
     public static final float MAX_THICKNESS = 0.9f;
     public static final float DEFAULT_SCALE_FACTOR = 0.9511f;
     private float currentScaleFactor = DEFAULT_SCALE_FACTOR;
-    private RectF outerRect = new RectF();
+    private final RectF outerRect = new RectF();
     private float currentThicknessFactor = DEFAULT_THICKNESS;
 
     /**
@@ -100,13 +100,13 @@ class StarModel {
     /**
      * firstVertex is vertex: E (very left one)
      *
-     * @see  StarModel
+     * @see StarModel
      */
     private VertexF firstVertex;
 
     /**
      * All star vertexes, from the most left one. then clockwise.
-     *
+     * <p>
      * NOTE: init or update by {@link #initAllVertexesToStandard() }
      *
      * @see #firstVertex
@@ -161,6 +161,7 @@ class StarModel {
 
     /**
      * Get vertex at index in {@link #vertexes}
+     *
      * @param index see {@link #vertexes}
      */
     public VertexF getVertex(int index) {
@@ -183,18 +184,18 @@ class StarModel {
     }
 
     private void offsetStar(float left, float top) {
-        for (int i = 0; i < vertexes.length; i++) {
-            vertexes[i].x += left;
-            vertexes[i].y += top;
+        for (VertexF vertex : vertexes) {
+            vertex.x += left;
+            vertex.y += top;
         }
     }
 
     private void changeScaleFactor(float newFactor) {
         float scale = newFactor / currentScaleFactor;
         if (scale == 1f) return;
-        for (int i = 0; i < vertexes.length; i++) {
-            vertexes[i].x *= scale;
-            vertexes[i].y *= scale;
+        for (VertexF vertex : vertexes) {
+            vertex.x *= scale;
+            vertex.y *= scale;
         }
         currentScaleFactor = newFactor;
     }
@@ -239,13 +240,13 @@ class StarModel {
         float offsetX = -outerRect.left;
         float offsetY = outerRect.top;
 
-        for (int i = 0; i < vertexes.length; i++) {
-            vertexes[i].y = -vertexes[i].y + offsetY;
-            vertexes[i].x += offsetX;
+        for (VertexF vertex : vertexes) {
+            vertex.y = -vertex.y + offsetY;
+            vertex.x += offsetX;
 
             // standard value is in radius = 1f, so..
-            vertexes[i].x /= 2f;
-            vertexes[i].y /= 2f;
+            vertex.x /= 2f;
+            vertex.y /= 2f;
         }
 
         updateOuterRect();
@@ -262,6 +263,6 @@ class StarModel {
     }
 
     public static float getStarWidth(float starHeight) {
-        return  starHeight / getOuterRectAspectRatio();
+        return starHeight / getOuterRectAspectRatio();
     }
 }
