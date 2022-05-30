@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
 group = 'com.idlestar.ratingstar'
-version = '1.0'
+version = 'v1.0.6'
 
 android {
     compileSdkVersion 32
@@ -20,11 +20,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    publishing {
-        singleVariant('release') {
-            withSourcesJar()
-        }
-    }
     namespace 'com.idlestar.ratingstar'
 }
 
@@ -35,4 +30,21 @@ dependencies {
     })
     api 'androidx.appcompat:appcompat:1.4.1'
     testImplementation 'junit:junit:4.13.2'
+}
+
+
+project.afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                artifact androidSourcesJar
+            }
+        }
+    }
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier 'sources'
+    from android.sourceSets.main.java.srcDirs
 }
