@@ -1,4 +1,8 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+
+group = 'com.idlestar.ratingstar'
+version = '1.0'
 
 android {
     compileSdkVersion 32
@@ -14,6 +18,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
         }
     }
     namespace 'com.idlestar.ratingstar'
